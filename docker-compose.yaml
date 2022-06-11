@@ -15,7 +15,7 @@ services:
     networks:
       - extnet
 
-  nginx:
+  nginx.libpostal:
     image: nginx:1.22.0
     volumes:
       - ./wait-for-it.sh:/wait-for-it.sh
