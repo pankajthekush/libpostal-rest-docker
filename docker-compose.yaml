@@ -1,0 +1,16 @@
+version: '2.4'
+
+services:
+  libpostal:
+    logging:
+      driver: json-file
+      options:
+        max-size: '5m'
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: pkumdev/libpostal-rest
+    ports:
+      - "8080"
+    
