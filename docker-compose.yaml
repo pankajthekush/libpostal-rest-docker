@@ -2,15 +2,36 @@ version: '2.4'
 
 services:
   libpostal:
+    image: pkumdev/libpostal-rest
     logging:
       driver: json-file
       options:
         max-size: '5m'
-
     build:
       context: .
       dockerfile: Dockerfile
-    image: pkumdev/libpostal-rest
     ports:
-      - "8080"
-    
+      - 8080
+    networks:
+      - extnet
+
+  nginx:
+    image: nginx:1.22.0
+    volumes:
+      - ./wait-for-it.sh:/wait-for-it.sh
+      - ./libpostal.conf:/etc/nginx/conf.d/default.conf
+    command: >
+          /bin/sh -c "/wait-for-it.sh -t 0 libpostal:8080 -- echo libpostal-rest is up;
+          service nginx start; tail -f /dev/null"
+    ports:
+      - 80
+    environment:
+      - NGINX_HOST=foobar.com
+      - NGINX_PORT=80
+    networks:
+      - extnet
+
+networks:
+  extnet:
+    external: true
+ 
