@@ -3,6 +3,7 @@ version: '2.4'
 services:
   libpostal:
     image: pkumdev/libpostal-rest
+    restart: always
     logging:
       driver: json-file
       options:
